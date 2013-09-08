@@ -8,6 +8,10 @@ buildscript {
 }
 apply plugin: 'android'
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 repositories {
     mavenCentral()
 }
@@ -23,5 +27,29 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:18.0.0'
+    // com.google.android.gms.common.AccountPicker とかで必要
+    compile 'com.google.android.gms:play-services:3.1.36+'
+
+    // Drive API ( http://code.google.com/p/google-api-java-client/wiki/APIs#Drive_API )
+    compile 'com.google.apis:google-api-services-drive:v2-rev96-1.16.0-rc'
+
+    compile 'com.google.http-client:google-http-client-gson:1.16.0-rc'
+
+    /*
+        import com.google.api.client.extensions.android.http.AndroidHttp;
+        import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+        import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+        あたりで必要
+     */
+    compile 'com.google.api-client:google-api-client-android:1.16.0-rc'
+
+    /* xpp3 は Android 側に含まれていてコンフリクトするというメッセージが出るので、下のように exclude しても良さそう:
+        compile('...') {
+             exclude group: 'xpp3'
+        }
+    警告メッセージ:
+        WARNING: Dependency xpp3:xpp3:1.1.4c is ignored for Debug as it may be conflicting with
+        the internal version provided by Android.
+            In case of problem, please repackage it with jarjar to change the class packages
+    */
 }

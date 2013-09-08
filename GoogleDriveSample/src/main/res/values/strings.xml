@@ -3,6 +3,7 @@
 
     <string name="app_name">GoogleDriveSample</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="load">Load</string>
+    <string name="save">Save</string>
 
 </resources>
