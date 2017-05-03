@@ -17,22 +17,18 @@ repositories {
 }
 
 android {
-    compileSdkVersion 18
+    compileSdkVersion 25
     buildToolsVersion '25.0.2'
 
     defaultConfig {
-        minSdkVersion 8
-        targetSdkVersion 16
-    }
-
-    lintOptions {
-        abortOnError false
+        minSdkVersion 14
+        targetSdkVersion 25
     }
 }
 
 dependencies {
     // com.google.android.gms.common.AccountPicker とかで必要
-    compile 'com.google.android.gms:play-services:3.1.36+'
+    compile 'com.google.android.gms:play-services-auth:10.2.4'
 
     // Drive API ( http://code.google.com/p/google-api-java-client/wiki/APIs#Drive_API )
     compile 'com.google.apis:google-api-services-drive:v2-rev96-1.16.0-rc'
