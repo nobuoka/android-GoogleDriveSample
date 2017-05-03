@@ -22,9 +22,9 @@ cd android-GoogleDriveSample
 
 [Android の Gradle Plugin](http://tools.android.com/tech-docs/new-build-system) を使用してビルドする。
 ビルドのために予め準備しておく必要があるものは次のとおり。
-* [Java SE Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (1.6 か 1.7)
+* [Java SE Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (1.8)
 * Android SDK Manager で次のものをインストールしておくこと (過不足があるかもしれない):
-  * [SDK with Build Tools](http://developer.android.com/sdk/index.html): Tools の Android SDK Build-tools 18.0.0 以降
+  * [SDK with Build Tools](http://developer.android.com/sdk/index.html): Tools の Android SDK Build-tools 25.0.2
   * Extras の Google Play services
   * Extras の Google Repository
 
