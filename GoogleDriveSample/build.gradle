@@ -23,7 +23,7 @@ dependencies {
 
     // Drive API Client Library for Java
     // See : https://developers.google.com/api-client-library/java/apis/drive/v2
-    compile 'com.google.apis:google-api-services-drive:v2-rev96-1.16.0-rc'
-    compile 'com.google.api-client:google-api-client-android:1.16.0-rc'
-    compile 'com.google.http-client:google-http-client-gson:1.16.0-rc'
+    compile 'com.google.apis:google-api-services-drive:v2-rev266-1.22.0'
+    compile 'com.google.api-client:google-api-client-android:1.22.0'
+    compile 'com.google.http-client:google-http-client-gson:1.22.0'
 }
