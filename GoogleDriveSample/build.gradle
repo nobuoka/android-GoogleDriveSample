@@ -10,30 +10,20 @@ android {
     }
 }
 
+configurations {
+    // These modules are included in the dependencies of google-http-client, but not needed on Android.
+    // See : https://developers.google.com/api-client-library/java/google-http-java-client/setup#google-http-client
+    compile.exclude group: 'xpp3', module: 'xpp3'
+    compile.exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+}
+
 dependencies {
     // com.google.android.gms.common.AccountPicker とかで必要
     compile 'com.google.android.gms:play-services-auth:10.2.4'
 
-    // Drive API ( http://code.google.com/p/google-api-java-client/wiki/APIs#Drive_API )
+    // Drive API Client Library for Java
+    // See : https://developers.google.com/api-client-library/java/apis/drive/v2
     compile 'com.google.apis:google-api-services-drive:v2-rev96-1.16.0-rc'
-
-    compile 'com.google.http-client:google-http-client-gson:1.16.0-rc'
-
-    /*
-        import com.google.api.client.extensions.android.http.AndroidHttp;
-        import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-        import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
-        あたりで必要
-     */
     compile 'com.google.api-client:google-api-client-android:1.16.0-rc'
-
-    /* xpp3 は Android 側に含まれていてコンフリクトするというメッセージが出るので、下のように exclude しても良さそう:
-        compile('...') {
-             exclude group: 'xpp3'
-        }
-    警告メッセージ:
-        WARNING: Dependency xpp3:xpp3:1.1.4c is ignored for Debug as it may be conflicting with
-        the internal version provided by Android.
-            In case of problem, please repackage it with jarjar to change the class packages
-    */
+    compile 'com.google.http-client:google-http-client-gson:1.16.0-rc'
 }
