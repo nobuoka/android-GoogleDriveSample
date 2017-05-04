@@ -22,8 +22,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:10.2.4'
 
     // Drive API Client Library for Java
-    // See : https://developers.google.com/api-client-library/java/apis/drive/v2
-    compile 'com.google.apis:google-api-services-drive:v2-rev266-1.22.0'
+    // See : https://developers.google.com/api-client-library/java/apis/drive/v3
+    compile 'com.google.apis:google-api-services-drive:v3-rev71-1.22.0'
     compile 'com.google.api-client:google-api-client-android:1.22.0'
     compile 'com.google.http-client:google-http-client-gson:1.22.0'
 }

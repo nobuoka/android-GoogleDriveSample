@@ -1,9 +1,7 @@
 package info.vividcode.android.app.googledrivesample;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -20,8 +18,6 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.http.ByteArrayContent;
-import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpResponse;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
@@ -98,19 +94,19 @@ public class MainActivity extends Activity {
                     // 指定のタイトルのファイルの ID を取得
                     String fileIdOrNull = null;
                     FileList list = service.files().list().execute();
-                    for (File f : list.getItems()) {
-                        if (FILE_TITLE.equals(f.getTitle())) {
+                    for (File f : list.getFiles()) {
+                        if (FILE_TITLE.equals(f.getName())) {
                             fileIdOrNull = f.getId();
                         }
                     }
 
                     File body = new File();
-                    body.setTitle(FILE_TITLE);//fileContent.getName());
+                    body.setName(FILE_TITLE);//fileContent.getName());
                     body.setMimeType("text/plain");
 
                     ByteArrayContent content = new ByteArrayContent("text/plain", inputText.getBytes(Charset.forName("UTF-8")));
                     if (fileIdOrNull == null) {
-                        service.files().insert(body, content).execute();
+                        service.files().create(body, content).execute();
                         showToast("insert!");
                     } else {
                         service.files().update(fileIdOrNull, body, content).execute();
@@ -136,30 +132,19 @@ public class MainActivity extends Activity {
                     // 指定のタイトルのファイルの ID を取得
                     String fileIdOrNull = null;
                     FileList list = service.files().list().execute();
-                    for (File f : list.getItems()) {
-                        if (FILE_TITLE.equals(f.getTitle())) {
+                    for (File f : list.getFiles()) {
+                        if (FILE_TITLE.equals(f.getName())) {
                             fileIdOrNull = f.getId();
                         }
                     }
 
-                    InputStream is = null;
                     if (fileIdOrNull != null) {
-                        File f = service.files().get(fileIdOrNull).execute();
-                        is = downloadFile(service, f);
-                    }
-                    BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                    try {
-                        StringBuffer sb = new StringBuffer();
-                        sb.append(br.readLine());
-
-                        final String text = sb.toString();
+                        final String text = downloadFile(service, fileIdOrNull);
                         runOnUiThread(new Runnable() {
                             @Override public void run() {
                                 ((EditText)findViewById(R.id.editText)).setText(text);
                             }
                         });
-                    } finally {
-                        if (br != null) br.close();
                     }
                     // TODO 失敗時の処理?
                 } catch (UserRecoverableAuthIOException e) {
@@ -173,21 +158,17 @@ public class MainActivity extends Activity {
         t.start();
     }
 
-    // https://developers.google.com/drive/v2/reference/files/get より
-    private static InputStream downloadFile(Drive service, File file) {
-        if (file.getDownloadUrl() != null && file.getDownloadUrl().length() > 0) {
-            try {
-                HttpResponse resp =
-                        service.getRequestFactory().buildGetRequest(new GenericUrl(file.getDownloadUrl()))
-                                .execute();
-                return resp.getContent();
-            } catch (IOException e) {
-                // An error occurred.
-                e.printStackTrace();
-                return null;
-            }
-        } else {
-            // The file doesn't have any content stored on Drive.
+    /**
+     * @see <a href="https://developers.google.com/drive/v3/web/manage-downloads">Download Files | Drive REST API</a>
+     */
+    private static String downloadFile(Drive service, String fileId) {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            service.files().get(fileId).executeMediaAndDownloadTo(outputStream);
+            return outputStream.toString("UTF-8");
+        } catch (IOException e) {
+            // An error occurred.
+            e.printStackTrace();
             return null;
         }
     }
